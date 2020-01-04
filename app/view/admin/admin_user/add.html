@@ -41,14 +41,14 @@
                             });
                         </script>
                         <div class="form-group">
-                            <label for="user_level_id" class="col-sm-2 control-label">用户等级</label>
+                            <label for="role" class="col-sm-2 control-label">用户角色</label>
                             <div class="col-sm-10 col-md-4">
-                                <select name="user_level_id" id="user_level_id" class="form-control field-select"
-                                        data-placeholder="请选择用户等级">
-                                    <option value=""></option>
-                                    {foreach name='user_level_list' id='item'}
+                                <select name="role" id="role" class="form-control field-select"
+                                        data-placeholder="请选择用户角色">
+                                    <option value="">请选择用户角色</option>
+                                    {foreach name='role' id='item'}
                                     <option value="{$item.id}" {if isset($data) &&
-                                            $data.user_level_id==$item.id}selected{/if}>
+                                            $data.role==$item.id}selected{/if}>
                                         {$item.name}
                                     </option>
                                     {/foreach}
@@ -83,7 +83,7 @@
                             <label for="password" class="col-sm-2 control-label">密码</label>
                             <div class="col-sm-10 col-md-4">
                                 <input id="password" name="password"
-                                       value="{$data.password|default='$2y$10$HU5eKkvynPi0iP/eQqSrmuwUMQhDB18QLLNCwtAvc09KKoLuv3I16'}"
+                                       value="111111"
                                        placeholder="请输入密码" type="password" class="form-control field-password">
                             </div>
                         </div>
@@ -111,7 +111,7 @@
                     </div>
                     <!-- 表单底部 -->
                     <div class="box-footer">
-                        {:token()}
+
                         <div class="col-sm-2">
                         </div>
                         <div class="col-sm-10 col-md-4">

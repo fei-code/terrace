@@ -15,7 +15,7 @@ class AdminAuth
     public function handle($request, \Closure $next)
     {
 
-        $uid = app()->session->get('user_id');
+        $uid = app()->session->get('admin_user_id');
       //  var_dump($uid);
 
         if(!isset($uid) ||empty($uid)) {

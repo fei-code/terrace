@@ -1,10 +1,7 @@
 {extend name="admin/public/base" /}
 {block name='content'}
 {include file='admin/public/content_header' /}
-<!--数据列表页面-->
 <section class="content">
-
-    <!--顶部搜索筛选-->
     <div class="row">
         <div class="col-md-12">
             <div class="box">
@@ -13,46 +10,11 @@
 
                         <div class="form-group">
                             <input value="{$_keywords ? $_keywords : '' ;}"
-                                   name="_keywords" id="_keywords" class="form-control input-sm"
-                                   placeholder="用户名/手机号/昵称">
+                                   name="_keywords" id="_keywords" class="form-control input-sm" placeholder="名称/简介">
                         </div>
-
-                        <div class="form-group">
-                            <select name="_order" id="_order" class="form-control input-sm index-order">
-                                <option value="">排序字段</option>
-                                <option value="id" {if isset($_order) && $_order=='id'}selected{/if}>ID</option>
-                                <option value="user_level_id" {if isset($_order) &&
-                                        $_order=='user_level_id'}selected{/if}>用户等级
-                                </option>
-                                <option value="mobile" {if isset($_order) && $_order=='mobile'}selected{/if}>手机号
-                                </option>
-                                <option value="status" {if isset($_order) && $_order=='status'}selected{/if}>是否启用
-                                </option>
-                                <option value="create_time" {if isset($_order) && $_order=='create_time'}selected{/if}>
-                                    创建时间
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <select name="_by" id="_by" class="form-control input-sm index-order">
-                                <option value="">排序方式</option>
-                                <option value="desc" {if isset($_by) && $_by=='desc'}selected{/if}>倒序</option>
-                                <option value="asc" {if isset($_by) && $_by=='asc'}selected{/if}>正序</option>
-                            </select>
-                        </div>
-                        <script>
-                            $('#_order').select2();
-                            $('#_by').select2();
-                        </script>
 
                         <div class="form-group">
                             <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-search"></i> 查询
-                            </button>
-                        </div>
-                        <div class="form-group">
-                            <button onclick="exportData()" class="btn btn-sm btn-warning exportData" type="button"><i
-                                    class="fa fa-search"></i> 导出
                             </button>
                         </div>
                         <div class="form-group">
@@ -69,11 +31,10 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box">
-
                 <!--数据列表顶部-->
                 <div class="box-header">
                     <div>
-                        <a title="添加" data-toggle="tooltip" class="btn btn-primary btn-sm " href="/admin/admin_user/create">
+                        <a title="添加" data-toggle="tooltip" class="btn btn-primary btn-sm " href="/admin/admin_role/create">
                             <i class="fa fa-plus"></i> 添加
                         </a>
                         <a class="btn btn-danger btn-sm AjaxButton" data-toggle="tooltip" title="删除选中数据"
@@ -81,6 +42,7 @@
                            data-url="{:url('del')}">
                             <i class="fa fa-trash"></i> 删除
                         </a>
+
                         <a class="btn btn-success btn-sm AjaxButton" data-toggle="tooltip" title="启用选中数据"
                            data-confirm-title="启用确认" data-confirm-content="您确定要启用选中的数据吗？" data-id="checked"
                            data-url="{:url('enable')}">
@@ -93,12 +55,12 @@
                             <i class="fa fa-circle"></i> 禁用
                         </a>
 
-                        <a class="btn btn-success btn-sm ReloadButton" data-toggle="tooltip" title="刷新">
+                        <a class="btn btn-success btn-sm ReloadButton" data-toggle="tooltip" title="刷新"
+                           data-id="checked" data-url="{:url('del')}">
                             <i class="fa fa-refresh"></i> 刷新
                         </a>
                     </div>
                 </div>
-
                 <div class="box-body table-responsive">
                     <table class="table table-hover table-bordered datatable" width="100%">
                         <thead>
@@ -108,25 +70,14 @@
                                        placeholder="全选/取消">
                             </th>
                             <th>ID</th>
-                            <th>头像</th>
-                            <th>账号</th>
-                            <th>密码</th>
-                            <th>总积分</th>
-                            <th>消费积分</th>
-                            <th>类型</th>
-                            <th>手机号</th>
-                            <th>地址</th>
-                            <th>姓名</th>
-                            <th>区域</th>
-                            <th>小区id</th>
-
-                            <th>创建时间</th>
+                            <th>名称</th>
+                            <th>简介</th>
 
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {foreach name="data" id="item"}
+                        {foreach name='data' id='item'}
                         <tr>
                             <td>
                                 <input type="checkbox" onclick="checkThis(this)" name="data-checkbox"
@@ -134,23 +85,16 @@
                                        placeholder="选择/取消">
                             </td>
                             <td>{$item.id}</td>
-                            <td><img style="max-width: 40px" src="{$item.avatar}"></td>
-
-                            <td>{$item.zhanghao}</td>
-                            <td>{$item.mima}</td>
-                            <td>{$item.zongjifen}</td>
-                            <td>{$item.xiaofeijifen}</td>
-                            <td>{$item.leixing}</td>
-                            <td>{$item.tel}</td>
-                            <td>{$item.dizhi}</td>
                             <td>{$item.name}</td>
-                            <td>{$item.quyu}</td>
-                            <td>{$item.xiaoquid}</td>
-                            <td>{$item.create_time}</td>
-
+                            <td>{$item.description}</td>
 
                             <td class="td-do">
-                                <a href="{:url('edit',['id'=>$item.id])}"
+                                <a href="/admin/admin_role/access/{$item.id}"
+                                   class="btn btn-warning btn-xs" data-toggle="tooltip" title="授权">
+                                    <i class="fa fa-key"></i>
+                                </a>
+
+                                <a href="{:url('admin_role/edit',['id'=>$item.id])}"
                                    class="btn btn-primary btn-xs" title="修改" data-toggle="tooltip">
                                     <i class="fa fa-pencil"></i>
                                 </a>
@@ -168,7 +112,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 <!-- 数据列表底部 -->
                 <div class="box-footer">
                     {$page|raw}
@@ -176,11 +119,11 @@
                         <small>共{$total}条记录</small>&nbsp;
                         <small>每页显示</small>
                         &nbsp;
+
                         &nbsp;
                         <small>条记录</small>
                     </label>
                 </div>
-
             </div>
         </div>
     </div>

@@ -88,7 +88,7 @@ class LoginController  extends  Controller
             return json(['code'=>0,'msg'=>'密码错误']);
         }
         //  $this->checkToken($request);
-        app()->session->set('user_id',$data['id']);
+        app()->session->set('admin_user_id',$data['id']);
         return success(1,'登录成功','/admin');
     }
 
