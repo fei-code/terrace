@@ -18,6 +18,9 @@ Route::group('admin', function () {
         Route::get('/', '\app\controller\admin\IndexController@index');
         Route::resource('admin_menu', '\app\controller\admin\AdminMenuController');
         Route::resource('admin_user', '\app\controller\admin\AdminUserController');
+        Route::resource('admin_role', '\app\controller\admin\AdminRoleController');
+        Route::get('admin_role/access/:id','\app\controller\admin\AdminRoleController@access');
+        Route::post('admin_role/access','\app\controller\admin\AdminRoleController@accessPost');
         Route::get('admin_user/profile','\app\controller\admin\AdminUserController@profile');
         Route::post('admin_menu/del','\app\controller\admin\AdminMenuController@del');
         Route::resource('user', '\app\controller\admin\UserController');

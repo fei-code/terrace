@@ -249,4 +249,44 @@ class AdminTree
         }
         return $this->ret;
     }
+
+    //获取权限树
+    public function getAuthTreeAccess($my_id)
+    {
+        $id    = '';
+        $n_str = '';
+        $child = $this->getChild($my_id);
+
+        if (is_array($child)) {
+            $level = current($child);
+
+            $text  = $this->text[$level['level']] ?? end($this->text);
+
+            foreach ($child as $k => $v) {
+                @extract($v);
+
+                if ($this->getChild($k)) {
+                    eval("\$n_str = \"$text[0]\";");
+                    $this->html .= $n_str;
+
+                    self::getAuthTreeAccess($k);
+
+                    eval("\$n_str = \"$text[1]\";");
+                    $this->html .= $n_str;
+                } else {
+                    $a = $this->text['other'];
+                    eval("\$n_str = \"$a\";");
+                    $this->html .= $n_str;
+                }
+            }
+        }
+        return $this->html;
+    }
+
+
+    public function setText($text)
+    {
+        return $this->text = $text;
+
+    }
 }
