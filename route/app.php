@@ -44,8 +44,6 @@ Route::group('admin', function () {
         Route::get('admin_user/profile', '\app\controller\admin\AdminUserController@profile');
 
 
-        Route::resource('career', '\app\controller\admin\CareerController');
-        Route::resource('term', '\app\controller\admin\TermController');
         Route::any('editor/server', '\app\controller\admin\EditorController@server');
 
         Route::get('apply/a', '\app\controller\admin\ApplyController@a');

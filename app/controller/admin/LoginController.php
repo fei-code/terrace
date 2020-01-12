@@ -88,15 +88,13 @@ class LoginController  extends  Controller
         if(!password_verify($password,base64_decode($data['password']))) {
             return json(['code'=>0,'msg'=>'密码错误']);
         }
-<<<<<<< HEAD
-        //  $this->checkToken($request);
-        app()->session->set('admin_user_id',$data['id']);
-        return success(1,'登录成功','/admin');
-=======
+
+
+
 
         app()->session->set('admin_user_id',$data['id']);
          success(1,'登录成功','/admin');
->>>>>>> checkout
+
     }
 
     /**
