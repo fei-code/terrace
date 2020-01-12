@@ -11,7 +11,7 @@ use think\Request;
 
 class IndexController extends Controller
 {
-<<<<<<< HEAD
+
     /**
      * @param Request $request
      * @return \think\Response|void
@@ -86,11 +86,6 @@ class IndexController extends Controller
     {
         //
     }
-=======
-        public function index()
-        {
->>>>>>> checkout
 
-            return view_home('index/index');
-        }
+
 }
