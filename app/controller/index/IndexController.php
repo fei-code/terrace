@@ -11,6 +11,7 @@ use think\Request;
 
 class IndexController extends Controller
 {
+<<<<<<< HEAD
     /**
      * @param Request $request
      * @return \think\Response|void
@@ -85,15 +86,11 @@ class IndexController extends Controller
     {
         //
     }
+=======
+        public function index()
+        {
+>>>>>>> checkout
 
-    /**
-     * 删除指定资源
-     *
-     * @param int $id
-     * @return \think\Response
-     */
-    public function delete($id)
-    {
-        //
-    }
+            return view_home('index/index');
+        }
 }

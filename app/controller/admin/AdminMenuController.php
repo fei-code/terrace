@@ -151,7 +151,7 @@ class AdminMenuController extends Controller
         }
         $res = $adminMenu->whereIn('id', $ids)->delete();
         return $res ? success() : error();
-     }
+    }
 
     //菜单选择 select树形选择
     protected function menu($selected = 1, $current_id = 0)
