@@ -34,7 +34,7 @@
                 <!--数据列表顶部-->
                 <div class="box-header">
                     <div>
-                        <a title="添加" data-toggle="tooltip" class="btn btn-primary btn-sm " href="/admin/admin_role/create">
+                        <a title="添加" data-toggle="tooltip" class="btn btn-primary btn-sm " href="/admin/term/create">
                             <i class="fa fa-plus"></i> 添加
                         </a>
                         <a class="btn btn-danger btn-sm AjaxButton" data-toggle="tooltip" title="删除选中数据"
@@ -71,8 +71,8 @@
                             </th>
                             <th>ID</th>
                             <th>名称</th>
-                            <th>简介</th>
-
+                            <th>状态</th>
+                            <th>创建时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -86,22 +86,20 @@
                             </td>
                             <td>{$item.id}</td>
                             <td>{$item.name}</td>
-                            <td>{$item.description}</td>
-
+                            <td>{if $item.status==1}已结束{else/}未结束{/if}</td>
+                            <td>{$item.create_time}</td>
                             <td class="td-do">
-                                <a href="/admin/admin_role/access/{$item.id}"
-                                   class="btn btn-warning btn-xs" data-toggle="tooltip" title="授权">
-                                    <i class="fa fa-key"></i>
-                                </a>
 
-                                <a href="/admin/admin_role/{$item.id}/edit"
+
+
+                                <a href="/admin/term/{$item.id}/edit"
                                    class="btn btn-primary btn-xs" title="修改" data-toggle="tooltip">
                                     <i class="fa fa-pencil"></i>
                                 </a>
                                 <a class="btn btn-danger btn-xs AjaxButtonDelete" data-toggle="tooltip" title="删除"
                                    data-id="{$item.id}" data-confirm-title="删除确认"
                                    data-confirm-content='您确定要删除ID为 <span class="text-red">{$item.id}</span> 的数据吗'
-                                   data-url="/admin/admin_role/{$item.id}">
+                                   data-url="/admin/term/{$item.id}">
                                     <i class="fa fa-trash"></i>
                                 </a>
 

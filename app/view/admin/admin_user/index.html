@@ -110,18 +110,8 @@
                             <th>ID</th>
                             <th>头像</th>
                             <th>账号</th>
-                            <th>密码</th>
-                            <th>总积分</th>
-                            <th>消费积分</th>
-                            <th>类型</th>
-                            <th>手机号</th>
-                            <th>地址</th>
-                            <th>姓名</th>
-                            <th>区域</th>
-                            <th>小区id</th>
-
+                            <th>角色</th>
                             <th>创建时间</th>
-
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -134,18 +124,12 @@
                                        placeholder="选择/取消">
                             </td>
                             <td>{$item.id}</td>
-                            <td><img style="max-width: 40px" src="{$item.avatar}"></td>
+                            <td><img style="max-width: 40px" src="{$item.avatar ??'/static/admin/images/avatar.jpg'}"></td>
 
-                            <td>{$item.zhanghao}</td>
-                            <td>{$item.mima}</td>
-                            <td>{$item.zongjifen}</td>
-                            <td>{$item.xiaofeijifen}</td>
-                            <td>{$item.leixing}</td>
-                            <td>{$item.tel}</td>
-                            <td>{$item.dizhi}</td>
-                            <td>{$item.name}</td>
-                            <td>{$item.quyu}</td>
-                            <td>{$item.xiaoquid}</td>
+                            <td>{$item.username}</td>
+                            <td>{$item->adminRole->name ?? ''}</td>
+
+
                             <td>{$item.create_time}</td>
 
 

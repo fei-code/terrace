@@ -16,27 +16,68 @@
                     </div>
                 </div>
 
-                <form id="dataForm" class="form-horizontal dataForm" {if isset($data)}action="/admin/admin_role/{$data.id ?? ''}"{else /} action="/admin/admin_role"{/if} method="post"
+                <form id="dataForm" class="form-horizontal dataForm" action="/admin/setting/edit" method="post"
                       enctype="multipart/form-data">
-                {if isset($data.id)}
-                <input type="hidden" name="_method" value="PUT" >
-                {/if}
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="name" class="col-sm-2 control-label">角色名称</label>
-                            <div class="col-sm-10 col-md-4">
-                                <input maxlength="50" id="name" name="name" value="{$data.name|default=''}"
-                                       class="form-control" placeholder="请输入名称">
-                            </div>
-                        </div>
 
+                    <div class="box-body">
+                        {volist name="data" id="vo"}
                         <div class="form-group">
-                            <label for="description" class="col-sm-2 control-label">简介</label>
+                            <label class="col-sm-2 control-label">{$vo.description}</label>
+                            {switch $vo.setting_type}
+                            {case 1}
                             <div class="col-sm-10 col-md-4">
-                                <input maxlength="50" id="description" name="description"
-                                       value="{$data.description|default=''}" class="form-control" placeholder="请输入简介">
+                                <div class="checkbox">
+                                    {volist name="apply" id="v1" key="k"}
+                                    <label>
+                                        <input type="checkbox" name="apply[]" class="field-checkbox" value="{$k}" {if in_array($k,$vo.value)}checked{/if}> {$v1}
+                                    </label>
+                                    {/volist}
+                                </div>
                             </div>
+                            {/case}
+                            {case 2}
+                            <div class="col-sm-10">
+                                <script id="safe_content" name="safe_content" type="text/plain">{$vo.value|raw|default=''}</script>
+                            </div>
+
+                        <script>
+                            UE.delEditor('safe_content');
+                            var UE_safe_content = UE.getEditor('safe_content',{
+                                serverUrl :UEServer
+                            });
+                        </script>
+                            {/case}
+                            {default / }
+                            <div class="col-sm-10 col-md-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="apply[]" class="field-checkbox"> 设置类型
+                                    </label>
+                                </div>
+                            </div>
+                            {/switch}
+
                         </div>
+                        {/volist}
+
+                        <script>
+                            $('#setting_type').select2();
+                        </script>
+
+
+                        <script>
+                            $('#status').bootstrapSwitch({
+                                onText: "是",
+                                offText: "否",
+                                onColor: "success",
+                                offColor: "danger",
+                                onSwitchChange: function (event, state) {
+                                    $(event.target).closest('.bootstrap-switch').next().val(state ? '1' : '0').change();
+                                }
+                            });
+                        </script>
+
+
                     </div>
 
                     <!--表单底部-->

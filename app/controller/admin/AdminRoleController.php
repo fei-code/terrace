@@ -75,9 +75,10 @@ class AdminRoleController extends Controller
      * @param int $id
      * @return \think\Response
      */
-    public function edit($id)
+    public function edit($id, AdminRole $model)
     {
-        //
+        $data = $model->find($id);
+        return view_admin('admin_role/add', ['data' => $data]);
     }
 
     /**
@@ -87,9 +88,20 @@ class AdminRoleController extends Controller
      * @param int $id
      * @return \think\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id,AdminRoleValidate $validate, AdminRole $model)
     {
-        //
+        $param = $request->param();
+        $validate_result = $validate->scene('add')->check($param);
+        if (!$validate_result) {
+            return error(0, $validate->getError());
+        }
+        $result = $model::where('id',$id)->update($param);
+        $url = URL_BACK;
+        if (isset($param['_create']) && $param['_create'] == 1) {
+            $url = URL_RELOAD;
+        }
+
+        return $result ? success(1, '修改成功', $url) : error();
     }
 
     /**
@@ -98,9 +110,19 @@ class AdminRoleController extends Controller
      * @param int $id
      * @return \think\Response
      */
-    public function delete($id)
+    public function delete($id,AdminRole $model)
     {
-        //
+        $count = AdminUser::where('role',$id)->count();
+        if($count > 0) {
+            error(0,'此角色下还存在用户');
+        }
+
+
+        $res = $model->whereIn('id', $id)->delete();
+
+        return $res ? success() : error();
+
+
     }
 
 

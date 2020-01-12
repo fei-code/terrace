@@ -4,6 +4,7 @@ declare (strict_types = 1);
 namespace app\controller\admin;
 
 use app\model\AdminUser;
+use think\exception\ValidateException;
 use think\facade\Validate;
 use think\Request;
 
@@ -62,16 +63,15 @@ class LoginController  extends  Controller
         //
     }
 
-    /**
-     * @param Request $request
-     * @param AdminUser $adminUser
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
+
     public function update(Request $request,AdminUser $adminUser)
     {
+        $check = $request->checkToken('__token__');
+
+        if(false === $check) {
+          return    error(0,'令牌数据无效');
+
+        }
         $param = $request->param();
         $validate = Validate::rule([
             'username'  => 'require|max:25',
@@ -79,17 +79,18 @@ class LoginController  extends  Controller
         ]);
 
         if (!$validate->check($param)) {
-            return json(['code'=>0,'msg'=>$validate->getError()]);
+            return    error(0,$validate->getError());
+
         }
         $data = $adminUser->where('username',$param['username'])->find();
-        if(!isset($data)) return json(['code'=>0,'msg'=>'账号不存在']);
+        if(!isset($data))  return error(0,'账号不存在');
         $password = trim($param['password']);
         if(!password_verify($password,base64_decode($data['password']))) {
             return json(['code'=>0,'msg'=>'密码错误']);
         }
-        //  $this->checkToken($request);
+
         app()->session->set('admin_user_id',$data['id']);
-        return success(1,'登录成功','/admin');
+         success(1,'登录成功','/admin');
     }
 
     /**
