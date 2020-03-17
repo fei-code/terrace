@@ -18,6 +18,9 @@
                 <form id="dataForm" class="form-horizontal dataForm" {if isset($data)}action="/admin/admin_user/{$data.id|default=''}"{else /}action="/admin/admin_user"{/if}  method="post"
                       enctype="multipart/form-data">
                     <!-- 表单字段区域 -->
+                {if isset($data)}
+                <input type="hidden" name="_method" value="PUT" >
+                {/if}
                     <div class="box-body">
 
                         <div class="form-group">
@@ -131,9 +134,7 @@
             'nickname': {
                 required: true,
             },
-            'password': {
-                required: true,
-            },
+
             'status': {
                 required: true,
             },

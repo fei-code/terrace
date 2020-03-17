@@ -97,13 +97,6 @@ class AdminRoleController extends Controller
 
     }
 
-    /**
-     * 删除指定资源
-     *
-     * @param int $id
-     * @return \think\Response
-     */
-
 
 
     public function delete($id,AdminRole $model)
@@ -111,6 +104,9 @@ class AdminRoleController extends Controller
         $count = AdminUser::where('role',$id)->count();
         if($count > 0) {
             error(0,'此角色下还存在用户');
+        }
+        if($id == 1) {
+            error(0,'无法删除');
         }
 
 

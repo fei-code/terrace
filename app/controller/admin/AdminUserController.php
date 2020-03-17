@@ -19,13 +19,31 @@ class AdminUserController extends Controller
     public function index(Request $request, AdminUser $model)
     {
         $param = $request->param();
-        $model = $model->scope('where', $param);
+        $where = [];
+        if (!isset($param['_keywords']) ||empty($param['_keywords'])) {
+            $param['_keywords'] = "";
+        }
+//        if (isset($param['term_id']) && !empty($param['term_id'])) {
+//            $where[] = ['term_id', '=', $param['term_id']];
+//        } else {
+//            $param['term_id'] = 0;
+//        }
+//        if (isset($param['career_id']) && !empty($param['career_id'])) {
+//            $where[] = ['career_id', '=', $param['career_id']];
+//        } else {
+//            $param['career_id'] = 0;
+//        }
+        $where[] = ['id', '>', 0];
+//
+//
+//        $data = $model->where('name|school|grade|parent_name|town|id_card|often_mobile|mobile','like','%'.$param['_keywords'].'%')->where([$where])->paginate($this->admin['per_page'], false);
 
-        $data = $model->paginate($this->admin['per_page'], false, ['query' => $request->get()]);
+
+        $data = $model->whereLike('username','%'.$param['_keywords'].'%')->paginate($this->admin['per_page']);
         //关键词，排序等赋值
 
 
-        return view_admin('admin_user/index', ['data' => $data, 'page' => $data->render(), 'total' => $data->total(), $request->get()]);
+        return view_admin('admin_user/index', ['data' => $data, 'page' => $data->render(), 'total' => $data->total(),'param'=>$param]);
 
     }
 
@@ -58,7 +76,11 @@ class AdminUserController extends Controller
         if (!$validate_result) {
             error(0, $validate->getError());
         }
-        $param['avatar'] = "";
+        if (empty($_FILES['avatar']['name'])) {
+            return error(0, '请上传图片');
+        }
+        $file = $request->file('avatar');
+        $saveName = Filesystem::disk('public')->putFile('uploads', $file);
         $result = $model::create($param);
 
         $url = URL_BACK;
@@ -82,39 +104,54 @@ class AdminUserController extends Controller
         //
     }
 
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param int $id
-     * @return \think\Response
-     */
-    public function edit($id, AdminRole $adminRole)
+
+    public function edit($id, AdminRole $adminRole,AdminUser $model)
     {
         $role = $adminRole->select();
-        return view_admin('admin_user/add', ['role' => $role]);
+        $data = $model->find($id);
+        return view_admin('admin_user/add', ['role' => $role,'data'=>$data]);
     }
 
-    /**
-     * 保存更新的资源
-     *
-     * @param \think\Request $request
-     * @param int $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(Request $request, $id,AdminUser $model,AdminUserValidate $validate)
     {
-        //
+
+        $param = $request->param();
+
+
+        $validate_result = $validate->scene('edit')->check($param);
+        if (!$validate_result) {
+            error(0, $validate->getError());
+        }
+        if (empty($_FILES['avatar']['name'])) {
+            return error(0, '请上传图片');
+        }
+        $file = $request->file('avatar');
+
+        $saveName = Filesystem::disk('public')->putFile('uploads', $file);
+
+        $param['avatar'] ='/'.$saveName;
+        $result = $model->where('id',$id)->save($param);
+
+        $url = URL_BACK;
+        if (isset($param['_create']) && $param['_create'] == 1) {
+            $url = URL_RELOAD;
+        }
+
+        return $result ? success(1, '添加成功', $url) : error();
     }
 
-    /**
-     * 删除指定资源
-     *
-     * @param int $id
-     * @return \think\Response
-     */
-    public function delete($id)
+
+    public function delete($id, AdminUser $model)
     {
-        //
+        if ($id == 1) {
+            return error(0, '无法删除');
+        }
+
+        $res = $model->where('id', $id)->delete();
+        return $res ? success() : error();
+
+
     }
 
     public function profile()

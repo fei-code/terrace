@@ -22,6 +22,18 @@ if (!function_exists('view_admin')) {
         return Response::create($template, 'view', $code)->assign($vars)->filter($filter);
     }
 }
+if(!function_exists('view_assign')) {
+    /**
+     * 模板变量赋值
+     * @param $name
+     * @param null $value
+     * @return \think\facade\View
+     */
+    function view_assign($name,$value=null)
+    {
+        return \think\facade\View::assign($name,$value);
+    }
+}
 if (!function_exists('view_home')) {
     /**
      * 渲染模板输出

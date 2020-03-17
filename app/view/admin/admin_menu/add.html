@@ -104,51 +104,10 @@
                                     }
                                 });
                             </script>
-                            <div class="form-group">
-                                <label for="log_method" class="col-sm-2 control-label">日志请求方式</label>
-                                <div class="col-sm-10 col-md-4">
-                                    <select name="log_method" id="log_method" class="form-control select2">
-                                        {foreach name='log_method' item='item'}
-                                        <option value="{$item}" {if isset($data) &&
-                                                $data.log_method==$item}selected{/if}>
-                                            {$item}
-                                        </option>
-                                        {/foreach}
-                                    </select>
-                                </div>
-                            </div>
-                            <script>
-                                $('#log_method').select2();
-                            </script>
 
-                            {if !isset($data)}
-                            <div class="form-group">
-                                <label for="is_more" class="col-sm-2 control-label">是否自动生成增删改菜单</label>
-                                <div class="col-sm-10 col-md-4">
-                                    <input id="is_more" class="input-switch" placeholder="" type="checkbox"/>
-                                    <input class="switch" name="is_more" value="0" hidden/>
-                                </div>
-                            </div>
-                            <script>
-                                $('#is_more').bootstrapSwitch({
-                                    onText: "是",
-                                    offText: "否",
-                                    onColor: "success",
-                                    offColor: "danger",
-                                    onSwitchChange: function (event, state) {
-                                        $(event.target).closest('.bootstrap-switch').next().val(state ? '1' : '0').change();
-                                    }
-                                });
-                            </script>
-                            <div class="form-group">
-                                <label for="more_name" class="col-sm-2 control-label">增删改操作名称</label>
-                                <div class="col-sm-10 col-md-4">
-                                    <input maxlength="50" id="more_name" name="more_name"
-                                           value="{$data.more_name|default=''}" class="form-control"
-                                           placeholder="请输入操作名称">
-                                </div>
-                            </div>
-                            {/if}
+
+
+
                         </div>
                     </div>
                     <!--表单底部-->

@@ -34,12 +34,7 @@ class AdminAuth
         }
         $url ='/'.$request->rule()->getRule();
 
-
-
         $menuId = Db::table('admin_menu')->where('url',$url)->find();
-
-
-
         $roleId = Db::table('admin_user')->where('id',$uid)->value('role');
 
         $roleMenu = Db::table('admin_role')->where('id',$roleId)->value('menu');

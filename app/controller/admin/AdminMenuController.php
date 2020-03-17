@@ -30,8 +30,8 @@ class AdminMenuController extends Controller
         $str = "<tr id='node-\$id' data-level='\$level' \$parent_id_node><td><input type='checkbox' onclick='checkThis(this)'
                      name='data-checkbox' data-id='\$id\' class='checkbox data-list-check' value='\$id' placeholder='选择/取消'>
                     </td><td>\$id</td><td>\$spacer\$name</td><td>\$url</td>
-                    <td>\$parent_id</td><td><i class='fa \$icon'></i><span>(\$icon)</span></td>
-                    <td>\$sort_id</td><td>\$is_show</td><td>\$log_method</td><td class='td-do'>\$str_manage</td></tr>";
+                   <td><i class='fa \$icon'></i><span>(\$icon)</span></td>
+                    <td>\$sort_id</td><td>\$is_show</td><td class='td-do'>\$str_manage</td></tr>";
         \app\facade\facade\AdminTreeFacade::initTree($result);
         $data = \app\facade\facade\AdminTreeFacade::getTree(0, $str);
 
@@ -42,6 +42,7 @@ class AdminMenuController extends Controller
     public function create(AdminMenu $adminMenu)
     {
         $parents   = $this->menu();
+
         return view_admin('admin_menu/add',['parents'=>$parents,'log_method'=>$adminMenu->logMethod]);
     }
 
@@ -154,12 +155,13 @@ class AdminMenuController extends Controller
     }
 
     //菜单选择 select树形选择
-    protected function menu($selected = 1, $current_id = 0)
+    protected function menu($selected = 0, $current_id = 0)
     {
         $result = AdminMenu::where('id', '<>', $current_id)->order('sort_id', 'asc')->order('id', 'asc')->column('parent_id,name,sort_id', 'id');
         foreach ($result as $r) {
             $r['selected'] = (int)$r['id'] === (int)$selected ? 'selected' : '';
         }
+
         $str = "<option value='\$id' \$selected >\$spacer \$name</option>";
         \app\facade\facade\AdminTreeFacade::initTree($result);
         return  \app\facade\facade\AdminTreeFacade::getTree(0, $str, $selected);

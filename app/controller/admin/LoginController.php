@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace app\controller\admin;
 
@@ -8,7 +8,7 @@ use think\exception\ValidateException;
 use think\facade\Validate;
 use think\Request;
 
-class LoginController  extends  Controller
+class LoginController extends Controller
 {
     /**
      * 显示资源列表
@@ -33,7 +33,7 @@ class LoginController  extends  Controller
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -44,7 +44,7 @@ class LoginController  extends  Controller
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param int $id
      * @return \think\Response
      */
     public function read($id)
@@ -55,7 +55,7 @@ class LoginController  extends  Controller
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -64,43 +64,35 @@ class LoginController  extends  Controller
     }
 
 
-    public function update(Request $request,AdminUser $adminUser)
+    public function update(Request $request, AdminUser $adminUser)
     {
         $check = $request->checkToken('__token__');
-
-        if(false === $check) {
-          return    error(0,'令牌数据无效');
-
+        if (false === $check) {
+            return error(0, '令牌数据无效');
         }
         $param = $request->param();
         $validate = Validate::rule([
-            'username'  => 'require|max:25',
+            'username' => 'require|max:25',
             'password' => 'require|max:16|min:6'
         ]);
-
         if (!$validate->check($param)) {
-            return    error(0,$validate->getError());
-
+            return error(0, $validate->getError());
         }
-        $data = $adminUser->where('username',$param['username'])->find();
-        if(!isset($data))  return error(0,'账号不存在');
+        $data = $adminUser->where('username', $param['username'])->find();
+        if (!isset($data)) return error(0, '账号不存在');
         $password = trim($param['password']);
-        if(!password_verify($password,base64_decode($data['password']))) {
-            return json(['code'=>0,'msg'=>'密码错误']);
+        if (!password_verify($password, base64_decode($data['password']))) {
+            return error(0, '密码错误');
         }
-
-
-
-
-        app()->session->set('admin_user_id',$data['id']);
-         success(1,'登录成功','/admin');
+        app()->session->set('admin_user_id', $data['id']);
+        success(1, '登录成功', '/admin');
 
     }
 
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param int $id
      * @return \think\Response
      */
     public function delete($id)
