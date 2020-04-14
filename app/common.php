@@ -18,7 +18,8 @@ if (!function_exists('view_admin')) {
      */
     function view_admin(string $template = '', $vars = [], $code = 200, $filter = null): View
     {
-        $template = 'admin/' . $template;
+        $template = 'admin/view/' . $template;
+
         return Response::create($template, 'view', $code)->assign($vars)->filter($filter);
     }
 }
@@ -124,4 +125,15 @@ function admin_avatar()
 {
     $avatar =  \think\facade\Db::table('admin_user')->where('id',app()->session->get('admin_user_id'))->value('avatar') ?? '/static/admin/images/avatar.jpg';
     return $avatar;
+}
+
+/**
+ *
+ * @param string $name 字段描述
+ * @param string $field 字段名称
+ * @return \app\facade\facade\HtmlFormFacade
+ */
+function html_form($name,$field)
+{
+  return  \app\facade\facade\HtmlFormFacade::column($name,$field);
 }
